@@ -125,15 +125,6 @@ class Auctioneer():
         #print("Unassigned areas:", unassigned_areas)
         return unassigned_areas
 
-    #Make this moment holy, my God.
-
-    # def get_available_robots(self):
-    #     """
-    #     Perhaps there is no need for the
-    #     :return:
-    #     """
-    #     pass
-
     def compute_urgency(self, unassigned_areas):
         """
         Computes urgency of areas based on their (PO:) F-measures, slope of loss, and average duration to that area from all other areas
@@ -170,46 +161,6 @@ class Auctioneer():
         bids = sorted(bids.items(), key=lambda x: x[1], reverse=False)
         return bids
 
-    """
-    def run_operation(self):
-        while True:
-            get unassigned areas
-            sort these unassigned areas
-            for area in sorted unassigned areas:
-                bids = get_bids(robots, area)
-                assign(area, lowest bidder)
-                Notice assignment area
-    Version 2.0
-    def run_operation(self):
-        while True:
-            unassigned_areas = get_fmeasures() #Get F-measures of unassigned areas
-                > area.py: report_flevel_cb; self.assigned_to_bidder
-            urgency = compute_urgency(unassigned_areas) #Simple: F-measure. Complex: F-measure + Expected loss
-            sort unassigned_areas by urgency
-                > auctioneer: compute_urgency
-                
-            #UPNEXT:
-            for area in unassigned_areas:
-                bids = get_bids(area)
-                    > auctioneer: collect_bids
-                assign area to lowest bidder
-                    > awarded_robot = bids[0][0]
-                    > auctioneer: assign_area(area, awarded_robot)
-                send notice to area that it has been assigned
-                    > auctioneer (client): notice_of_assignment() [server: respective area]
-    """
-    #UPNEXT: Fill up the missing pieces (DONE!). FIND OUT MILLION PESO QUESTION, QUICK AND DIRTY WAY!
-    #Goal: Find out whether by service server we can do the task allocation/assignment almost simultaneously
-    #That is, we no longer wait for the next result.
-    #DONE! THIS WORKS!
-    # def quick_n_dirty(self):
-    #     print("Assigning Robot 1 to Area 1")
-    #     assign_area(1, 1)
-    #     print("Assigning Robot 2 to Area 0")
-    #     assign_area(2, 0)
-
-
-    #UPNEXT: Make this program work! Find out the result!
     def run_operation(self, eps):
         rate = rospy.Rate(1)
         while True:

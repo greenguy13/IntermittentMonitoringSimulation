@@ -3,10 +3,10 @@
 """
 [WORK]
 Inputs:
-1. Receives battery level from motion
+1. Receives battery level from robot
 
 Process:
-> Monitors the battery levels from motion and stores in an array
+> Monitors the battery levels from robot and stores in an array
 
 Outputs:
 > Possibly a graph of battery levels throughout the duration of the operation

@@ -100,11 +100,6 @@ class Robot():
         self.visit_action_server = actionlib.SimpleActionServer("visit_action_server_" + str(robot_no), visitAction, execute_cb=self.visit_area_cb, auto_start=False)
         self.visit_action_server.start()
 
-        #Action Client: Monitor an area, raising its Fmeasure to max level
-        #NOTE: If we have multiple areas, we will need to have multiple action clients to restore their F-measure
-        # self.restore_fmeasure_action_client = actionlib.SimpleActionClient("restore_fmeasure_action_server", monitorAction)
-        # self.restore_fmeasure_action_client
-
         self.restore_fmeasure_action_clients = dict()
         for area in self.areas:
             self.restore_fmeasure_action_clients[str(area)] = actionlib.SimpleActionClient('restore_fmeasure_action_server_' + str(area), monitorAction)
@@ -135,20 +130,6 @@ class Robot():
         self.robot_availability_server = rospy.Service("robot_availability_server_" + str(robot_no), robot_availability, self.robot_availability_cb)
 
     #AUCTION BID METHODS
-    ## UPNEXT: METHODS FOR COMPUTING A BID.
-
-    #IMPORT request_fmeasure from decision_making. We can place these helper functions as a script
-    ##
-    # def request_fmeasures(self):
-    #     """
-    #     Requests current F-measures and stores in a dict
-    #     :return:
-    #     """
-    #     curr_fmeasures_dict = dict()
-    #     for area in self.areas():
-    #         curr_fmeasures_dict[str(area)] = request_fmeasure(area)
-    #     return curr_fmeasures_dict
-
 
     def report_location_cb(self, msg):
         """
@@ -209,27 +190,6 @@ class Robot():
         component = is_feasible * (loss/(cost+1))
         return component
 
-    ###AUCTION BID METHODS PART 2:
-    """
-    Part 1. Bidding: Service server to auctioneer for bid given an area
-        > Robot bids if there is at least one non-zero component.
-        > Otherwise, it doesn't return any bid and goes back to the charging station
-    Part 2. Awarding of bid and Visiting the area
-        > Robot becomes unavailable and area becomes assigned temporarily until accomplished
-        PO1: Client to Auctioneer for whether awarded the bid
-            > Possible: Awarded. Not Awarded. Not available
-            > If awarded visits the area
-        PO2: Server to Auctioneer for awarding of bid
-            > Receives an awarded bid
-            > Acknowledges as receipt of info
-            > Visits the area after that
-    Part 3. Requests for registry into the auction
-        > PO1: (This could be part 1 actually) The robot (a client) only requests for an area to bid if it is available
-        > PO2: Client to Auctioneer letting it know that service has been rendered
-        > PO3: Area itself has an assignment status 
-    
-    """
-
     def visit_area(self, area):
         """
         This method asks the robot to visit bid (or awarded) area. This is inserted in the run_operation as a while loop.
@@ -286,7 +246,6 @@ class Robot():
         self.available = False #Update availability after receiving assigned (or awarded) area
         return area_assignmentResponse(True)
 
-    #TO-COMPOSE: BID for an area
     def bid_for_area_cb(self, msg):
         """
         PO: Compute for SS components for all of the areas.
@@ -307,7 +266,7 @@ class Robot():
         print("Bid:", bid)
         return bid
 
-    ##PART 1: Callbacks for Server Service/Action Server/Publisher
+    ##Callbacks for Server Service/Action Server/Publisher
     def _laser_callback(self, msg):
         """Processing of laser message."""
         # Access to the index of the measurement in front of the motion.
@@ -442,7 +401,7 @@ class Robot():
 
         return result
 
-#TO-DO: (DONE) Battery depletes as we move around plus monitor an area
+#Battery depletes as we move around plus monitor an area
 #Another: If area that we are moving toward is an area, we request to restore F-measure
     #If charging station, we request to charge up battery
 
@@ -592,20 +551,6 @@ class Robot():
         for p in range(len(vertex1)):
             distance += (vertex1[p] - vertex2[p])**2
         return distance
-
-    # def visit_area(self, area):
-    #     """
-    #     From current area we visit a next area
-    #     :param name:
-    #     :return:
-    #     """
-    #     path = self.paths_dict["(" + str(self.location) + ", " + str(area) + ")"]
-    #
-    #     for coord in path:
-    #         # print("Current coordinates: ", self.x, self.y, self.theta)
-    #         # print("Next waypoint: ", coord)
-    #         self.move_to_coords(coord)
-    #     self.location = area
 
     def run_operation(self):
         # 1st. initialization of node.

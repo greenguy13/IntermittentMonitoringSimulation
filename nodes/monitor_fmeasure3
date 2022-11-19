@@ -1,0 +1,11 @@
+#!/usr/bin/env python
+
+import rospy
+from intermittent_monitoring.monitor_fmeasure import *
+
+if __name__ == '__main__':
+
+    fmeasure_listener = FMeasureListener(area=3)
+    result = fmeasure_listener.save_recorded_array()
+    print("Stored fmeasure data:", result)
+    rospy.spin()

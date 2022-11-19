@@ -1,0 +1,10 @@
+# Goal
+int32 max_batt_level
+
+---
+# Result
+bool battery_charged
+
+---
+# Feedback
+string charging_battery

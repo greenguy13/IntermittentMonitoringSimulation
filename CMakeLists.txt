@@ -81,11 +81,7 @@ include_directories(
 
 catkin_install_python(
     PROGRAMS
-        nodes/motion
-        nodes/fmeasure
-        nodes/decision_making
         nodes/charging_station
-        nodes/monitor_battery
         nodes/area1
         nodes/area2
         nodes/area3

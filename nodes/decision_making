@@ -5,8 +5,8 @@ Steady-state algo
 
 Inputs/requests:
 + Odom (from motion node)? Could be the self.location. A message of where the robot is.
-+ Current F-measure (from fmeasure node)
-+ WORK: Current battery level (from motion)
++ Current F-measure (from area node)
++ WORK: Current battery level (from robot)
 
 Process:
 + compute feasibility of a node/area
@@ -18,13 +18,6 @@ Process:
 Output:
 + waypoint to a robot (to motion node) [or location]
 
-Tutorial acknowledgments:
-https://www.theconstructsim.com/ros-5-mins-035-create-ros-action-client/
-"""
-
-"""
-UPNEXT (NOV 11, 2022):
-1. Update node/server/client dependencies
 """
 
 
@@ -102,30 +95,6 @@ def request_battery_level(robot_no, msg=True):
     result = battery_service(request)
     # print("Received from server current battery:", result.batt_level)
     return result.batt_level
-
-
-"""
-What we have here now are ingredients for the algorithm:
-1. Current F-measure
-2. Current battery level
-3. Current location of the robots
-
-What we will need:
-1. Given the current F-measure, measure the loss for the next decision step.
-2. Given the current battery level, determine whether going to an area in the next decision step is feasible
-
-This then suggest that we have a sense on the (average) duration it would take to visit an area from current area.
-This duration would include the drop in F-measure and the battery consumption.
-To measure this duration, we need to measure:
- a. How long it takes,
- b. Battery consumed,
- c. Drop in F-measure
-"""
-
-#UPNEXT: Decision making algorithm
-##Loss function (script)
-##Cost function (script)
-##Algorithm (script)
 
 def is_feasible(battery_level, battery_consumption):
     """

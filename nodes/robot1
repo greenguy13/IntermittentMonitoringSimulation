@@ -55,8 +55,3 @@ if __name__ == "__main__":
     robot = Robot(1, motion_config, paths_config)
     robot.run_operation()
     rospy.spin()
-
-"""
-UPNEXT (NOV 11, 2022):
-1. The task allocation by auction means then that the robot has to compute for the 
-"""
